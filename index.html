@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>轉址中...</title>
+  <script>
+    const urlMap = 
+    {
+      "lssh": "https://script.google.com/macros/s/AKfycbxa0bcgEqYYKULbcA31qU7-aopy-3BX4ZdNj6UdDbkskuHn4MgWmtsx5DyIYAuABDqv/exec",
+      "cshs": "https://script.google.com/macros/s/AKfycbzbXw_9NoT9r3EduVhXBz4_HXjqHkJlf8j3RcSP6bnXCIc4fjcu-Pwd1VBdgxchNdMLcA/exec",
+    };
+
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      
+      // 支援兩種網址寫法：
+      // 寫法 A: ?to=fb
+      // 寫法 B: ?fb (更簡短)
+      let key = params.get("to");
+      if (!key) 
+      {
+        // 如果沒有 ?to=，就抓第一個沒有 value 的 key (例如 ?fb)
+        key = Array.from(params.keys())[0];
+      }
+
+      const targetUrl = urlMap[key];
+
+      if (targetUrl) 
+      {
+        // 找到目標網址，直接跳轉
+        window.location.replace(targetUrl);
+      } 
+      else 
+      {
+        // 找不到對應 Key 或沒給參數時顯示首頁/提示
+        document.getElementById("status").innerHTML = key 
+          ? `❌ 找不到代碼 <code>${key}</code> 的轉址目標。`
+          : "ℹ️ 請在網址後方加上短代碼，例如：<code>?fb</code> 或 <code>?to=fb</code>";
+      }
+    });
+  </script>
+</head>
+<body style="font-family: sans-serif; padding: 2rem; text-align: center;">
+  <h2>🔗 網址轉址服務</h2>
+  <p id="status">正在搜尋目標頁面...</p>
+</body>
+</html>
